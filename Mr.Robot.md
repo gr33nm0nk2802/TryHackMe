@@ -1,7 +1,7 @@
 
-# Author: gr33nm0nk2802
-# Note:   This is a walkthrough of the Tryhackme Mr. Robot lab. I would suggest you to definately checkout this awesome lab. Flags haven't been shared
-# Link:  (https://tryhackme.com/room/mrrobot)
+## Author: gr33nm0nk2802
+### Note:   This is a walkthrough of the Tryhackme Mr. Robot lab. I would suggest you to definately checkout this awesome lab. Flags haven't been shared
+### Link:  (https://tryhackme.com/room/mrrobot)
 
 
 Note use your own machine IP upon deploying the machine.
