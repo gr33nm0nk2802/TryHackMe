@@ -170,4 +170,4 @@ First we compile the exploit on our local machine. Then we use scp to copy the f
 
 After copying this exploit we simply execute it and bingo we are root.
 
-Thanks to my teammate p4nth3r for the last part. I was struck at scp. Do note use the scp command on the host where you compiled the program and dont forget to export your IP to the variable if you intend to use the exactly same command. 
+Thanks to my teammate **[@p4nth3r](https://tryhackme.com/p/p4nth3r)** for the last part. I was struck at scp. Do note use the scp command on the host where you compiled the program and dont forget to export your IP to the variable if you intend to use the exactly same command. 
